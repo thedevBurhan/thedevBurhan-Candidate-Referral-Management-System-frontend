@@ -27,42 +27,40 @@ const ReferralForm = ({ addCandidate }) => {
     setLoading(true);
     setError('');
   
-    // Initialize FormData
     const data = new FormData();
     data.append('name', formData.name);
     data.append('email', formData.email);
     data.append('phone', formData.phone);
     data.append('jobTitle', formData.jobTitle);
   
-    // Only append 'resume' if it's available
+
     if (formData.resume) {
       data.append('resume', formData.resume);
     }
   
     try {
-      // Make the API request to submit the form data
+   
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/candidates`, data, {
         headers: {
-          'Content-Type': 'multipart/form-data',  // Ensure correct content type
+          'Content-Type': 'multipart/form-data',  
         },
       });
   
-      // After successful submission, add the new candidate and reset the form
       addCandidate(response.data);
       setFormData({
         name: '',
         email: '',
         phone: '',
         jobTitle: '',
-        resume: null, // Reset resume after form submission
+        resume: null, 
       });
   
       alert('Candidate referred successfully');
     } catch (error) {
-      // Handle errors
+     
       console.error('Error referring candidate:', error.message);
       if (error.response) {
-        // Backend error message
+    
         setError(error.response.data.message || 'Error referring candidate. Please try again.');
       } else {
         setError('Network error. Please try again.');
