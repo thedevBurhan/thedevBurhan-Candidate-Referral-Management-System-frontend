@@ -8,7 +8,6 @@ const Dashboard = () => {
   const [search, setSearch] = useState("");
   const [error, setError] = useState("");
 
-  // Function to update the candidates list after a new candidate is added
   const addCandidate = (newCandidate) => {
     setCandidates((prevCandidates) => [...prevCandidates, newCandidate]);
   };
@@ -68,7 +67,7 @@ const Dashboard = () => {
         placeholder="Search by job title or status"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="p-2 border w-full sm:w-96" // Full width on small screens, 96 width on larger screens
+        className="p-2 border w-full sm:w-96" 
       />
     </div>
     {error && <p className="text-red-500 text-center">{error}</p>}

@@ -24,46 +24,54 @@ const ReferralForm = ({ addCandidate }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
     setLoading(true);
     setError('');
   
+    // Initialize FormData
     const data = new FormData();
     data.append('name', formData.name);
     data.append('email', formData.email);
     data.append('phone', formData.phone);
     data.append('jobTitle', formData.jobTitle);
-    
+  
+    // Only append 'resume' if it's available
     if (formData.resume) {
       data.append('resume', formData.resume);
     }
   
     try {
-      const response = await axios.post('http://localhost:5000/api/candidates', data, {
+      // Make the API request to submit the form data
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/candidates`, data, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'multipart/form-data',  // Ensure correct content type
         },
       });
-
-      // Call the function to add the new candidate to the list
+  
+      // After successful submission, add the new candidate and reset the form
       addCandidate(response.data);
       setFormData({
         name: '',
         email: '',
         phone: '',
         jobTitle: '',
-        resume: null,
+        resume: null, // Reset resume after form submission
       });
-
+  
       alert('Candidate referred successfully');
     } catch (error) {
-      console.error('Error referring candidate:', error);
-      setError('Error referring candidate. Please try again.');
+      // Handle errors
+      console.error('Error referring candidate:', error.message);
+      if (error.response) {
+        // Backend error message
+        setError(error.response.data.message || 'Error referring candidate. Please try again.');
+      } else {
+        setError('Network error. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
   };
-
+  
   return (
     <form onSubmit={handleSubmit} className="container p-4 sm:p-2 border bg-[#d1d0c553] rounded-lg text-center mx-auto">
   <input
@@ -108,7 +116,7 @@ const ReferralForm = ({ addCandidate }) => {
     onChange={handleFileChange}
     accept=".pdf"
     className="p-2 rounded-md mx-2 w-full sm:w-auto"
-    required
+    
   />
   <button
     type="submit"

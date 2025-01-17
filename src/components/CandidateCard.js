@@ -4,7 +4,7 @@ const CandidateCard = ({ candidate, onUpdateStatus, handleDelete }) => {
   const [status, setStatus] = useState("Status");
 
   const handleClick = () => {
-    const candidateId = candidate._id?.$oid || candidate._id; // Safely access the ID
+    const candidateId = candidate._id?.$oid || candidate._id; 
     console.log("Deleting candidate with ID:", candidateId);
     handleDelete(candidateId);
   };
@@ -12,7 +12,7 @@ const CandidateCard = ({ candidate, onUpdateStatus, handleDelete }) => {
   const handleStatusChange = (e) => {
     const newStatus = e.target.value;
     setStatus(newStatus);
-    onUpdateStatus(candidate._id, newStatus); // Call the status update function
+    onUpdateStatus(candidate._id, newStatus); 
   };
 
   // Ensure that the component re-renders when the status is updated
@@ -32,7 +32,7 @@ const CandidateCard = ({ candidate, onUpdateStatus, handleDelete }) => {
       </p>
       <p className="text-[#393939]">Email: {candidate.email}</p>
       <p className="text-[#393939]">Status: {status}</p>{" "}
-      {/* Display the current status */}
+      
       <div className="mt-4 space-x-2">
         <select
           value={status}
